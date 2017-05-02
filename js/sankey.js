@@ -194,7 +194,12 @@ d3.sankey = function() {
       nodesByBreadth.forEach(function(nodes) {
         nodes.forEach(function(node, i) {
           node.y = i;
-          node.dy = node.value * ky;
+          if(node.value == 0){
+            node.dy = 16;
+          }
+          else{
+            node.dy = node.value * ky;
+          }
         });
       });
  
