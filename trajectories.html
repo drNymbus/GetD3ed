@@ -1,89 +1,13 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>Trajectories</title>
-<style>
-
-*{
-  <!-- border: 1px dotted #FF0000;-->
-}
-
-html{
-  background-color: #D1E7FD;
-}
-
-body{
-  font-family: verdana, arial, sans-serif;
-  width: 1024px;
-  margin-right: auto;
-  margin-left: auto;
-  box-shadow: 2px 2px 20px #111111;
-  border-radius: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  background-color: #FFFFFF;
-  padding: 20px;
-}
-
-h1{
-  text-align: center;
-  background-color: #F5F7FF;
-  border-radius: 10px;
-  box-shadow: 1px 1px 10px #111111;
-  padding: 10px;
-}
-
-h2{
-  margin: 10px;
-}
-
-p{
-  margin: 10px;
-  text-align: justify;
-}
-
-td{
-  width: 33%;
-  valign: middle;
-}
-
-tr{
-  valign: middle;
-}
-
-img.logo{
-  height: 50px;
-}
-
-.node rect {
-  cursor: move;
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
-}
- 
-.node text {
-  pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
-}
- 
-.link {
-  fill: none;
-  stroke: #000;
-  stroke-opacity: .2;
-}
- 
-.link:hover {
-  stroke-opacity: .5;
-}
-
-
- 
-</style>
+<link rel="stylesheet" type="text/css" href="css/style.css">
 <body>
 
 <table style="width: 100%">
   <tr>
-   <td align="left" style="padding-left: 0px"><a href="http://www.lirmm.fr/lirmm_eng" target="_blank"><img src="lirmm.png" class="logo" /></a></td>
-   <td align="center"><a href="http://www.umontpellier.fr/" target="_blank"><img src="um.png" class="logo" /></a></td>
+   <td align="left" style="padding-left: 0px"><a href="http://www.lirmm.fr/lirmm_eng" target="_blank"><img src="img/lirmm.png" class="logo" /></a></td>
+   <td align="center"><a href="http://www.umontpellier.fr/" target="_blank"><img src="img/um.png" class="logo" /></a></td>
    <td align="right" style="padding-right: 0px"><a href="https://www.lirmm.fr/lirmm_eng/research/teams/advanse" target="_blank">ADVANSE</a></td>
   </tr>
 </table>
@@ -95,7 +19,7 @@ img.logo{
 <div id="chart">
  
 <script src="http://d3js.org/d3.v3.js"></script>
-<script src="sankey.js"></script>
+<script src="js/sankey.js"></script>
 <script>
   
 var units = "Widgets";
@@ -131,7 +55,7 @@ var path = sankey.link();
  
 // load the data
 //d3.json("sankeygreenhouse.json", function(error, graph) {
-d3.json("test.json", function(error, graph) {
+d3.json("json/test.json", function(error, graph) {
 
     var nodeMap = {};
     console.log(graph.nodes);
