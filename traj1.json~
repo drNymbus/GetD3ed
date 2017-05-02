@@ -1,9 +1,0 @@
-{
-"links": [
-{"source":"0","target":"1","value":"2","label":"0,1"}
-],	
-"nodes": [
-    {"name":"0","label":"0,1,2","time":"1"},
-    {"name":"1","label":"0,1","time":"2"}
-]	
-}
