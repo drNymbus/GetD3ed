@@ -63,3 +63,16 @@ div.btnLegende li{
 div.btnLegende input{
   margin-right: 5px;
 }
+
+div.btnLegende label{
+  color:#000;
+  opacity: 1;
+}
+
+div.btnLegende label:hover{
+  opacity: 0.8;
+}
+
+g path.hover{
+  stroke-opacity: 0.5;
+}

@@ -84,6 +84,7 @@ var path = sankey.link();
           .append($("<li>")
             .addClass(x.name)
             .append($("<label>")
+              .addClass(x.name)
               .append($("<input>")
                 .addClass(x.name)
                 .attr("type","checkbox")
@@ -102,8 +103,9 @@ var path = sankey.link();
             $(".btnLegende ul li." + x.name).append($("<ul>")
               .append($("<li>")
                 .append($("<label>")
+                  .addClass(x.name + y.id)
                   .append($("<input>")
-                    .addClass(x.name)
+                    //.addClass(x.name)
                     .addClass(x.name + y.id)
                     .attr("type","checkbox")
                     .attr("checked","true"))
@@ -132,7 +134,14 @@ var path = sankey.link();
       }
     });
 
-
+    $(".btnLegende label").hover(function(){
+      var classe = this.getAttribute("class");
+      console.log("#chart svg g path." + classe);
+      $("#chart svg g path." + classe).addClass("hover");
+    },function(){
+      var classe = this.getAttribute("class");
+      $("#chart svg g path." + classe).removeClass("hover");
+    });
 
 
     // Créé les liens avec les numéros de node dans graphe.link
@@ -174,11 +183,12 @@ link.append("title").text(function(d) {
 });
 
 // Ajout des classes sur les links
-link.data().forEach(function(lien){
+link.data().forEach(function(lien, index){
+  console.log(link[0][index]);
   lien.pattern.forEach(function(pattern){
-    link.classed(pattern.name, true);
+    $(link[0][index]).addClass(pattern.name);
     pattern.links.forEach(function(patternLink){
-      link.classed(pattern.name + patternLink.id,true);
+      $(link[0][index]).addClass(pattern.name + patternLink.id);
     });
   });
 });
