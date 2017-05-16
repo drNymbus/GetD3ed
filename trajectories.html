@@ -37,6 +37,25 @@
         }
       }
     }
+
+    function checkInput(obj){
+      console.log(obj);
+      var checked = $(obj).prop("checked");
+      var classe = obj.getAttribute("class");
+
+      if(!checked){
+        var path = $("g path." + classe);
+        $(path).addClass("disabled");
+        $(path).hide()
+      }
+      else{
+        var path = $("g path." + classe + ".disabled");
+        $(path).removeClass("disabled");
+        $(path).show();
+      }
+    }
+
+
       var units = "Widgets";
 
 
@@ -95,7 +114,11 @@ var path = sankey.link();
                 .on("click",function(evt){
                   var checked = $(this).prop("checked");
                   var checkbox = document.querySelectorAll(".btnLegende ." + this.getAttribute("class") + " li input");
+                  console.log(checkbox);
                   $(checkbox).prop("checked", checked);
+                  checkbox.forEach(function(obj){
+                    checkInput(obj);
+                  })
                 }))
               .append(x.name))));
 
@@ -112,20 +135,7 @@ var path = sankey.link();
                     .attr("type","checkbox")
                     .attr("checked","true")
                     .on("click",function(evt){
-                      var checked = $(this).prop("checked");
-                      var classe = this.getAttribute("class");
-                      
-                      if(!checked){
-                        var path = $("g path." + classe);
-                        $(path).addClass("disabled");
-                        $(path).hide()
-                      }
-                      else{
-                        var path = $("g path." + classe + ".disabled");
-                        $(path).removeClass("disabled");
-                        $(path).show();
-                      }
-                      
+                      checkInput(this);
                     }))
                   .append(y.id))));
             arrayID.push(y.id);
