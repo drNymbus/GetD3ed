@@ -180,7 +180,7 @@ var link = svg.append("g").selectAll(".link")
     var elt = d3.select(this);
     elt.classed(x.name,true); 
   }, true)
-  .attr("d",function(d,i){console.log(index + " " + i);return path(obj,0.5*(obj.value * d.links.length) * (i));})
+  .attr("d",function(d,i){console.log(index + " " + i);return path(obj,0.5*(obj.value * d.links.length) * (i+1));})
   .style("stroke-width", function(d){return 0.5*(obj.value * d.links.length);});
 });
 
