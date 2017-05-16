@@ -73,6 +73,50 @@ div.btnLegende label:hover{
   opacity: 0.8;
 }
 
+div.btnLegende label.Gpatterns{
+  color:rgb(255,0,255);
+}
+
+div.btnLegende label.Convoys{
+  color:rgb(0,0,255);
+}
+div.btnLegende label.ClosedSwarms{
+  color:rgb(255,0,0);
+}
+div.btnLegende label.FuzzyClosedSwarms{
+  color:rgb(255,100,0);
+}
+div.btnLegende label.Convergents{
+  color:rgb(255,255,0);
+}
+div.btnLegende label.Divergents{
+  color:rgb(0,255,0);
+}
+
+
 g path.hover{
   stroke-opacity: 0.5;
+}
+
+
+
+
+path.Gpatterns{;
+  stroke:rgb(255,0,255);
+}
+
+path.Convoys{
+  stroke:rgb(0,0,255);
+}
+path.ClosedSwarms{
+  stroke:rgb(255,0,0);
+}
+path.FuzzyClosedSwarms{
+  stroke:rgb(255,100,0);
+}
+path.Convergents{
+  stroke:rgb(255,255,0);
+}
+path.Divergents{
+  stroke:rgb(0,255,0);
 }

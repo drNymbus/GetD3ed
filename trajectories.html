@@ -65,19 +65,22 @@ var sankey = d3.sankey()
 
 //---------------- Initialisation du svg Terminée ----------------- 
 
-// path est un objet link -> permet la création des liens entre clusters
+// path est une fonction -> permet la création des liens entre clusters
 var path = sankey.link();
 
 // load the data
 //d3.json("sankeygreenhouse.json", function(error, graph) {
-  d3.json("json/backup.json", function(error, graph) {
+  d3.json("json/newjson.json", function(error, graph) {
 //d3.json("json/traj2.json", function(error, graph) {
+
+    if(graph == null){
+      alert("Il y a une erreur : " + error.message);
+    }
+
     var nodeMap = {};
     graph.nodes.forEach(function(x) {nodeMap[x.id] = x; });
-
-
+    //Création des checkbox du côté de la légende  + Ajout des pattern sur les objets link
     graph.pattern.forEach(function(x){
-      //console.log(x);
       var arrayID = [];
       if(x.links.length != 0){
         $(".btnLegende").append($("<ul>")
@@ -133,10 +136,9 @@ var path = sankey.link();
         });
       }
     });
-
+    // Création d'évênement sur les checkbox
     $(".btnLegende label").hover(function(){
       var classe = this.getAttribute("class");
-      console.log("#chart svg g path." + classe);
       $("#chart svg g path." + classe).addClass("hover");
     },function(){
       var classe = this.getAttribute("class");
@@ -160,20 +162,35 @@ var path = sankey.link();
   .nodes(graph.nodes)
   .links(graph.links)
   .layout(32);
-
+//console.log(graph.links);
 // add in the links
 var link = svg.append("g").selectAll(".link")
 .data(graph.links)
 .enter().append("path")
 .attr("class", "link")
-.attr("d", path)
+.attr("d", function(x){return path(x,0);})
 .style("stroke-width", function(d){return 0.5*d.value;})
-      //.style("stroke-width", function(d) { return Math.max(1, d.dy); })
-      .sort(function(a, b) { return b.dy - a.dy; });
+.sort(function(a, b) { return b.dy - a.dy; })
+.each(function(obj,index){
+  svg.append("g").selectAll(".link")
+  .data(obj.pattern).enter()
+  .append("path")
+  .classed("link",true)
+  .each(function(x){
+    var elt = d3.select(this);
+    elt.classed(x.name,true); 
+  }, true)
+  .attr("d",function(d,i){console.log(index + " " + i);return path(obj,0.5*(obj.value * d.links.length) * (i));})
+  .style("stroke-width", function(d){return 0.5*(obj.value * d.links.length);});
+});
 
 // add in the label for the edges on mouse over 
 link.append("title").text(function(d) {
-  var str = "Node : " + d.label + "\nPatterns : ";
+  var str = "Node : " + d.label;
+  if(d.pattern == null){
+    return str;
+  }
+  str += "\nPatterns : ";
   d.pattern.forEach(function(x){
     x.links.forEach(function(y){
       str += "\n" + x.name + y.id;
@@ -182,17 +199,19 @@ link.append("title").text(function(d) {
   return str;
 });
 
+/*
 // Ajout des classes sur les links
 link.data().forEach(function(lien, index){
-  console.log(link[0][index]);
-  lien.pattern.forEach(function(pattern){
-    $(link[0][index]).addClass(pattern.name);
-    pattern.links.forEach(function(patternLink){
-      $(link[0][index]).addClass(pattern.name + patternLink.id);
+  if(lien.pattern!=null){
+    lien.pattern.forEach(function(pattern){
+      $(link[0][index]).addClass(pattern.name);
+      pattern.links.forEach(function(patternLink){
+        $(link[0][index]).addClass(pattern.name + patternLink.id);
+      });
     });
-  });
+  }
 });
-
+*/  
 // add the link titles
 /*
   link.append("title")
@@ -207,13 +226,14 @@ var node = svg.append("g").selectAll(".node")
 .enter().append("g")
 .attr("class", "node")
 .attr("transform", function(d) { 
-  return "translate(" + d.x + "," + d.y + ")"; })
+  return "translate(" + d.x + "," + d.y + ")"; });
+/*
 .call(d3.behavior.drag()
   .origin(function(d) { return d; })
   .on("dragstart", function() { 
     this.parentNode.appendChild(this); })
   .on("drag", dragmove));
-
+*/
 // add the rectangles for the nodes
 node.append("rect")
 .attr("height", function(d) {return d.dy; })
