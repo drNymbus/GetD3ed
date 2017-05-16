@@ -1,4 +1,15 @@
 body{
+  /*
+  Variables
+  */
+  --colorGpatterns :rgb(255,0,255);
+  --colorConvoys:rgb(0,0,255);
+  --colorClosedSwarms:rgb(255,0,0);
+  --colorFuzzyClosedSwarms:rgb(255,100,0);
+  --colorConvergents:rgb(255,255,0);
+  --colorDivergents:rgb(0,255,0);
+
+
   margin:0;
   font-family: verdana, arial, sans-serif;
 }
@@ -74,23 +85,23 @@ div.btnLegende label:hover{
 }
 
 div.btnLegende label.Gpatterns{
-  color:rgb(255,0,255);
+  color:var(--colorGpatterns);
 }
 
 div.btnLegende label.Convoys{
-  color:rgb(0,0,255);
+  color:var(--colorConvoys);
 }
 div.btnLegende label.ClosedSwarms{
-  color:rgb(255,0,0);
+  color:var(--colorClosedSwarms);
 }
 div.btnLegende label.FuzzyClosedSwarms{
-  color:rgb(255,100,0);
+  color:var(--colorFuzzyClosedSwarms);
 }
 div.btnLegende label.Convergents{
-  color:rgb(255,255,0);
+  color:var(--colorConvergents);
 }
 div.btnLegende label.Divergents{
-  color:rgb(0,255,0);
+  color:var(--colorDivergents);
 }
 
 
@@ -102,21 +113,21 @@ g path.hover{
 
 
 path.Gpatterns{;
-  stroke:rgb(255,0,255);
+  stroke: var(--colorGpatterns);
 }
 
 path.Convoys{
-  stroke:rgb(0,0,255);
+  stroke:var(--colorConvoys);
 }
 path.ClosedSwarms{
-  stroke:rgb(255,0,0);
+  stroke:var(--colorClosedSwarms);
 }
 path.FuzzyClosedSwarms{
-  stroke:rgb(255,100,0);
+  stroke:var(--colorFuzzyClosedSwarms);
 }
 path.Convergents{
-  stroke:rgb(255,255,0);
+  stroke:var(--colorConvergents);
 }
 path.Divergents{
-  stroke:rgb(0,255,0);
+  stroke:var(--colorDivergents);
 }

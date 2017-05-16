@@ -76,7 +76,7 @@ var path = sankey.link();
     if(graph == null){
       alert("Il y a une erreur : " + error.message);
     }
-
+    console.log(graph.links);
     var nodeMap = {};
     graph.nodes.forEach(function(x) {nodeMap[x.id] = x; });
     //Création des checkbox du côté de la légende  + Ajout des pattern sur les objets link
@@ -96,7 +96,6 @@ var path = sankey.link();
                   var checked = $(this).prop("checked");
                   var checkbox = document.querySelectorAll(".btnLegende ." + this.getAttribute("class") + " li input");
                   $(checkbox).prop("checked", checked);
-                  $(checkbox).prop("disabled", !checked);
                 }))
               .append(x.name))));
 
@@ -111,7 +110,23 @@ var path = sankey.link();
                     //.addClass(x.name)
                     .addClass(x.name + y.id)
                     .attr("type","checkbox")
-                    .attr("checked","true"))
+                    .attr("checked","true")
+                    .on("click",function(evt){
+                      var checked = $(this).prop("checked");
+                      var classe = this.getAttribute("class");
+                      
+                      if(!checked){
+                        var path = $("g path." + classe);
+                        $(path).addClass("disabled");
+                        $(path).hide()
+                      }
+                      else{
+                        var path = $("g path." + classe + ".disabled");
+                        $(path).removeClass("disabled");
+                        $(path).show();
+                      }
+                      
+                    }))
                   .append(y.id))));
             arrayID.push(y.id);
           }
@@ -170,10 +185,8 @@ var link = svg.append("g").selectAll(".link")
 .attr("class", "link")
 .attr("d", function(x){return path(x,0);})
 .style("stroke-width", function(d){return 0.5*d.value;})
-.sort(function(a, b) { return b.dy - a.dy; })
-.each(function(obj,index){
-  svg.append("g").selectAll(".link")
-  .data(obj.pattern).enter()
+.sort(function(a, b) { return b.dy - a.dy; });
+  /*
   .append("path")
   .classed("link",true)
   .each(function(x){
@@ -181,8 +194,7 @@ var link = svg.append("g").selectAll(".link")
     elt.classed(x.name,true); 
   }, true)
   .attr("d",function(d,i){console.log(index + " " + i);return path(obj,0.5*(obj.value * d.links.length) * (i+1));})
-  .style("stroke-width", function(d){return 0.5*(obj.value * d.links.length);});
-});
+  .style("stroke-width", function(d){return 0.5*(obj.value * d.links.length);});*/
 
 // add in the label for the edges on mouse over 
 link.append("title").text(function(d) {
@@ -197,6 +209,22 @@ link.append("title").text(function(d) {
     });
   });
   return str;
+});
+
+link.data().forEach(function(obj, index){
+  var cpt = 0;
+  obj.pattern.forEach(function(objPattern,indexPattern){
+    svg.append("g").selectAll(".link").data(objPattern.links).enter()
+    .append("path")
+    .classed("link",true)
+    .each(function(x){
+      var elt = d3.select(this);
+      elt.classed(objPattern.name + x.id, true);
+      elt.classed(objPattern.name, true);
+    })
+    .attr("d",function(d,i){cpt++;return path(obj,0.5 * obj.value * cpt)})
+    .style("stroke-width", function(d){return 0.5*obj.value})
+  });
 });
 
 /*
