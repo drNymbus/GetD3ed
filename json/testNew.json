@@ -1,1 +1,37 @@
-{"links":[{"id":0,"source":0,"target":1,"value":10,"label":0},{"id":1,"source":1,"target":2,"value":10,"label":0},{"id":3,"source":0,"target":1,"value":10,"label":1}],"nodes":[{"id":0,"label":"0,1","time":1},{"id":1,"label":"0,1","time":2},{"id":2,"label":"0","time":3}],"pattern":[{"name":"Convoys","links":[{"id":0,"source":0,"target":1,"value":2,"label":"0,1"},{"id":1,"source":0,"target":1,"value":1,"label":"0"},{"id":1,"source":1,"target":2,"value":1,"label":"0"}]},{"name":"ClosedSwarms","links":[{"id":0,"source":0,"target":1,"value":2,"label":"0,1"},{"id":1,"source":0,"target":1,"value":1,"label":"0"},{"id":1,"source":1,"target":2,"value":1,"label":"0"}]},{"name":"GPatterns","links":[{"id":0,"source":0,"target":1,"value":2,"label":"0,1"},{"id":1,"source":0,"target":1,"value":1,"label":"0"},{"id":1,"source":1,"target":2,"value":1,"label":"0"}]}]}
+{
+	"links":[
+		{"id":0,"source":0,"target":1,"value":1,"label":0},
+		{"id":1,"source":1,"target":2,"value":1,"label":0},
+		{"id":3,"source":0,"target":1,"value":1,"label":1}
+	],
+	"nodes":[
+		{"id":0,"label":"0,1","time":1},
+		{"id":1,"label":"0,1","time":2},
+		{"id":2,"label":"0","time":3}
+	],
+	"pattern":[
+		{"name":"Convoy",
+			"links":[
+				{"id":0,"source":0,"target":1,"value":2,"label":"0,1"},
+				{"id":1,"source":0,"target":1,"value":1,"label":"0"},
+				{"id":1,"source":1,"target":2,"value":1,"label":"0"}
+			]
+		},
+		{
+			"name":"ClosedSwarm",
+			"links":[
+				{"id":0,"source":0,"target":1,"value":2,"label":"0,1"},
+				{"id":1,"source":0,"target":1,"value":1,"label":"0"},
+				{"id":1,"source":1,"target":2,"value":1,"label":"0"}
+			]
+		},
+		{
+			"name":"GroupPattern",
+			"links":[
+				{"id":0,"source":0,"target":1,"value":2,"label":"0,1"},
+				{"id":1,"source":0,"target":1,"value":1,"label":"0"},
+				{"id":1,"source":1,"target":2,"value":1,"label":"0"}
+			]
+		}
+	]
+}

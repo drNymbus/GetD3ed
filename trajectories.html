@@ -19,27 +19,7 @@
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/sankey.js"></script>
     <script>
-    function addPatternAttribute(pattern, linkPattern, link){
-
-      if(!link["pattern"]){
-        link["pattern"] = [{"name" : pattern.name, "links": [linkPattern]}];
-      }
-      else{
-        var find = false;
-        link.pattern.forEach(function(x){
-          if(x.name == pattern.name){
-            find = true;
-            x.links.push(linkPattern);
-          }
-        });
-        if(!find){
-          link["pattern"].push({"name" : pattern.name, "links": [linkPattern]});   
-        }
-      }
-    }
-
     function checkInput(obj){
-      console.log(obj);
       var checked = $(obj).prop("checked");
       var classe = obj.getAttribute("class");
 
@@ -88,21 +68,37 @@ var sankey = d3.sankey()
 var path = sankey.link();
 
 // load the data
-//d3.json("sankeygreenhouse.json", function(error, graph) {
-  d3.json("json/testNew.json", function(error, graph) {
-//d3.json("json/traj2.json", function(error, graph) {
+  d3.json("json/newjson.json", function(error, graph) {
 
     if(graph == null){
-      alert("Il y a une erreur : " + error.message);
+      if(error.message == null){
+        alert("Il y a une erreur : Fichier non trouvé");
+      }
+      else{
+        alert("Il y a une erreur : " + error.message);
+      }
     }
-    console.log(graph.links);
     var nodeMap = {};
     graph.nodes.forEach(function(x) {nodeMap[x.id] = x; });
     //Création des checkbox du côté de la légende  + Ajout des pattern sur les objets link
+
+    $(".btnLegende").append($("<ul>")
+      .append($("<li>")
+        .append($("<label>")
+          .addClass("database")
+          .append($("<input>")
+            .addClass("database")
+            .attr("type","checkbox")
+            .attr("checked","true")
+            .on("click",function(evt){
+              checkInput(this);
+            }))
+          .append("Database"))));
+    if(graph.pattern != null){
     graph.pattern.forEach(function(x){
       var arrayID = [];
       if(x.links.length != 0){
-        $(".btnLegende").append($("<ul>")
+        $(".btnLegende > ul")
           .append($("<li>")
             .addClass(x.name)
             .append($("<label>")
@@ -114,18 +110,18 @@ var path = sankey.link();
                 .on("click",function(evt){
                   var checked = $(this).prop("checked");
                   var checkbox = document.querySelectorAll(".btnLegende ." + this.getAttribute("class") + " li input");
-                  console.log(checkbox);
                   $(checkbox).prop("checked", checked);
                   checkbox.forEach(function(obj){
                     checkInput(obj);
                   })
                 }))
-              .append(x.name))));
+              .append(x.name)));
 
+          $(".btnLegende ul li." + x.name).append($("<ul>"));
         x.links.forEach(function(y){
           
           if(!arrayID.includes(y.id)){
-            $(".btnLegende ul li." + x.name).append($("<ul>")
+            $(".btnLegende ul li." + x.name + " ul")
               .append($("<li>")
                 .append($("<label>")
                   .addClass(x.name + y.id)
@@ -137,30 +133,16 @@ var path = sankey.link();
                     .on("click",function(evt){
                       checkInput(this);
                     }))
-                  .append(y.id))));
+                  .append(y.id)));
             arrayID.push(y.id);
           }
-
-          if(parseInt(y.value) > 1){
-            var labels = y.label.split(",");
-            labels.forEach(function(lab){
-              graph.links.forEach(function(z){
-                if(z.label == lab && z.source == y.source && z.target == y.target){
-                  addPatternAttribute(x,y,z);
-                }
-              });     
-            })
-          }
-          else{
-            graph.links.forEach(function(z){
-              if(z.label == y.label && z.source == y.source && z.target == y.target){
-                addPatternAttribute(x,y,z);
-              }
-            });
-          }
+          var obj = y;
+          obj.pattern = x.name;
+          graph.links.push(obj);
         });
       }
     });
+    }
     // Création d'évênement sur les checkbox
     $(".btnLegende label").hover(function(){
       var classe = this.getAttribute("class");
@@ -173,7 +155,11 @@ var path = sankey.link();
 
     // Créé les liens avec les numéros de node dans graphe.link
     graph.links = graph.links.map(function(x) {
+      if(x.pattern == null){
+        x.pattern = "database";  
+      }
       return {
+        id : x.id,
         source: nodeMap[x.source],
         target: nodeMap[x.target],
         value: x.value,
@@ -187,14 +173,22 @@ var path = sankey.link();
   .nodes(graph.nodes)
   .links(graph.links)
   .layout(32);
-//console.log(graph.links);
 // add in the links
 var link = svg.append("g").selectAll(".link")
 .data(graph.links)
 .enter().append("path")
 .attr("class", "link")
+.each(function(x){
+  if(x.pattern != null){
+    var elt = d3.select(this);
+    if(x.pattern != "database"){
+      elt.classed(x.pattern + x.id, true);
+    }
+    elt.classed(x.pattern, true);
+  }
+})
 .attr("d", function(x){return path(x,0);})
-.style("stroke-width", function(d){return 0.5*d.value;})
+.style("stroke-width", function(d){return 3*d.value;})
 .sort(function(a, b) { return b.dy - a.dy; });
   /*
   .append("path")
@@ -209,18 +203,9 @@ var link = svg.append("g").selectAll(".link")
 // add in the label for the edges on mouse over 
 link.append("title").text(function(d) {
   var str = "Node : " + d.label;
-  if(d.pattern == null){
-    return str;
-  }
-  str += "\nPatterns : ";
-  d.pattern.forEach(function(x){
-    x.links.forEach(function(y){
-      str += "\n" + x.name + y.id;
-    });
-  });
   return str;
 });
-
+/*
 link.data().forEach(function(obj, index){
   var cpt = 0;
   obj.pattern.forEach(function(objPattern,indexPattern){
@@ -236,7 +221,7 @@ link.data().forEach(function(obj, index){
     .style("stroke-width", function(d){return 0.5*obj.value})
   });
 });
-
+*/
 /*
 // Ajout des classes sur les links
 link.data().forEach(function(lien, index){
@@ -264,14 +249,14 @@ var node = svg.append("g").selectAll(".node")
 .enter().append("g")
 .attr("class", "node")
 .attr("transform", function(d) { 
-  return "translate(" + d.x + "," + d.y + ")"; });
-/*
+  return "translate(" + d.x + "," + d.y + ")"; })
+
 .call(d3.behavior.drag()
   .origin(function(d) { return d; })
   .on("dragstart", function() { 
     this.parentNode.appendChild(this); })
   .on("drag", dragmove));
-*/
+
 // add the rectangles for the nodes
 node.append("rect")
 .attr("height", function(d) {return d.dy; })

@@ -5,8 +5,8 @@
 	{"source":"1","target":"2","value":"1","label":"0"}
 	],
 "nodes": [
-	{"name":"0","label":"0,1","time":"1"},
-	{"name":"1","label":"0,1","time":"2"},
-	{"name":"2","label":"0","time":"3"}
+	{"id":"0","label":"0,1","time":"1"},
+	{"id":"1","label":"0,1","time":"2"},
+	{"id":"2","label":"0","time":"3"}
 	]
 }

@@ -84,23 +84,23 @@ div.btnLegende label:hover{
   opacity: 0.8;
 }
 
-div.btnLegende label.Gpatterns{
+div.btnLegende label.GroupPattern{
   color:var(--colorGpatterns);
 }
 
-div.btnLegende label.Convoys{
+div.btnLegende label.Convoy{
   color:var(--colorConvoys);
 }
-div.btnLegende label.ClosedSwarms{
+div.btnLegende label.ClosedSwarm{
   color:var(--colorClosedSwarms);
 }
-div.btnLegende label.FuzzyClosedSwarms{
+div.btnLegende label.FuzzyClosedSwarm{
   color:var(--colorFuzzyClosedSwarms);
 }
-div.btnLegende label.Convergents{
+div.btnLegende label.Convergent{
   color:var(--colorConvergents);
 }
-div.btnLegende label.Divergents{
+div.btnLegende label.Divergent{
   color:var(--colorDivergents);
 }
 
@@ -112,22 +112,22 @@ g path.hover{
 
 
 
-path.Gpatterns{;
+path.GroupPattern{;
   stroke: var(--colorGpatterns);
 }
 
-path.Convoys{
+path.Convoy{
   stroke:var(--colorConvoys);
 }
-path.ClosedSwarms{
+path.ClosedSwarm{
   stroke:var(--colorClosedSwarms);
 }
-path.FuzzyClosedSwarms{
+path.FuzzyClosedSwarm{
   stroke:var(--colorFuzzyClosedSwarms);
 }
-path.Convergents{
+path.Convergent{
   stroke:var(--colorConvergents);
 }
-path.Divergents{
+path.Divergent{
   stroke:var(--colorDivergents);
 }
