@@ -19,29 +19,29 @@
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/sankey.js"></script>
     <script>
-    function checkInput(obj){
-      var checked = $(obj).prop("checked");
-      var classe = obj.getAttribute("class");
+function checkInput(obj){
+  var checked = $(obj).prop("checked");
+  var classe = obj.getAttribute("class");
 
-      if(!checked){
-        var path = $("g path." + classe);
-        $(path).addClass("disabled");
-        $(path).hide()
-      }
-      else{
-        var path = $("g path." + classe + ".disabled");
-        $(path).removeClass("disabled");
-        $(path).show();
-      }
-    }
-
-
-      var units = "Widgets";
+  if(!checked){
+    var path = $("g path." + classe);
+    $(path).addClass("disabled");
+    $(path).hide()
+  }
+  else{
+    var path = $("g path." + classe + ".disabled");
+    $(path).removeClass("disabled");
+    $(path).show();
+  }
+}
 
 
-      var margin = {top: 40, right: 40, bottom: 40, left: 40},
-      width = 1024 - margin.right - margin.left,
-      height = 600 - margin.top - margin.bottom;
+var units = "Widgets";
+
+
+var margin = {top: 40, right: 40, bottom: 40, left: 40},
+width = 1024 - margin.right - margin.left,
+height = 600 - margin.top - margin.bottom;
 
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
@@ -68,232 +68,233 @@ var sankey = d3.sankey()
 var path = sankey.link();
 
 // load the data
-  d3.json("json/newjson.json", function(error, graph) {
+d3.json("json/testNew.json", function(error, graph) {
 
-    if(graph == null){
-      if(error.message == null){
-        alert("Il y a une erreur : Fichier non trouvé");
-      }
-      else{
-        alert("Il y a une erreur : " + error.message);
-      }
+  if(graph == null){
+    if(error.message == null){
+      alert("Il y a une erreur : Fichier non trouvé");
     }
-    var nodeMap = {};
-    graph.nodes.forEach(function(x) {nodeMap[x.id] = x; });
+    else{
+      alert("Il y a une erreur : " + error.message);
+    }
+  }
+  var nodeMap = {};
+  graph.nodes.forEach(function(x) {nodeMap[x.id] = x; });
     //Création des checkbox du côté de la légende  + Ajout des pattern sur les objets link
 
-    $(".btnLegende").append($("<ul>")
-      .append($("<li>")
-        .append($("<label>")
+  $(".btnLegende").append($("<ul>")
+    .append($("<li>")
+      .append($("<label>")
+        .addClass("database")
+        .append($("<input>")
           .addClass("database")
-          .append($("<input>")
-            .addClass("database")
-            .attr("type","checkbox")
-            .attr("checked","true")
-            .on("click",function(evt){
-              checkInput(this);
-            }))
-          .append("Database"))));
-    if(graph.pattern != null){
-    graph.pattern.forEach(function(x){
+          .attr("type","checkbox")
+          .attr("checked","true")
+          .on("click",function(evt){
+            checkInput(this);
+          }))
+        .append("Database"))));
+  console.log(graph);
+  if(graph.patterns != null){
+    graph.patterns.forEach(function(x){
       var arrayID = [];
       if(x.links.length != 0){
         $(".btnLegende > ul")
-          .append($("<li>")
+        .append($("<li>")
+          .addClass(x.name)
+          .append($("<label>")
             .addClass(x.name)
-            .append($("<label>")
+            .append($("<input>")
               .addClass(x.name)
-              .append($("<input>")
-                .addClass(x.name)
-                .attr("type","checkbox")
-                .attr("checked","true")
-                .on("click",function(evt){
-                  var checked = $(this).prop("checked");
-                  var checkbox = document.querySelectorAll(".btnLegende ." + this.getAttribute("class") + " li input");
-                  $(checkbox).prop("checked", checked);
-                  checkbox.forEach(function(obj){
-                    checkInput(obj);
-                  })
-                }))
-              .append(x.name)));
+              .attr("type","checkbox")
+              .attr("checked","true")
+              .on("click",function(evt){
+                var checked = $(this).prop("checked");
+                var checkbox = document.querySelectorAll(".btnLegende ." + this.getAttribute("class") + " li input");
+                $(checkbox).prop("checked", checked);
+                checkbox.forEach(function(obj){
+                  checkInput(obj);
+                })
+              }))
+            .append(x.name)));
 
-          $(".btnLegende ul li." + x.name).append($("<ul>"));
+        $(".btnLegende ul li." + x.name).append($("<ul>"));
         x.links.forEach(function(y){
-          
+
           if(!arrayID.includes(y.id)){
             $(".btnLegende ul li." + x.name + " ul")
-              .append($("<li>")
-                .append($("<label>")
+            .append($("<li>")
+              .append($("<label>")
+                .addClass(x.name + y.id)
+                .append($("<input>")
+                  //.addClass(x.name)
                   .addClass(x.name + y.id)
-                  .append($("<input>")
-                    //.addClass(x.name)
-                    .addClass(x.name + y.id)
-                    .attr("type","checkbox")
-                    .attr("checked","true")
-                    .on("click",function(evt){
-                      checkInput(this);
-                    }))
-                  .append(y.id)));
+                  .attr("type","checkbox")
+                  .attr("checked","true")
+                  .on("click",function(evt){
+                    checkInput(this);
+                  }))
+                .append(y.id)));
             arrayID.push(y.id);
           }
           var obj = y;
-          obj.pattern = x.name;
+          obj.patterns = x.name;
           graph.links.push(obj);
         });
       }
     });
+  }
+  // Création d'évênement sur les checkbox
+  $(".btnLegende label").hover(function(){
+    var classe = this.getAttribute("class");
+    $("#chart svg g path." + classe).addClass("hover");
+  },function(){
+    var classe = this.getAttribute("class");
+    $("#chart svg g path." + classe).removeClass("hover");
+  });
+
+
+  // Créé les liens avec les numéros de node dans graphe.link
+  graph.links = graph.links.map(function(x) {
+    if(x.patterns == null){
+      x.patterns = "database";  
     }
-    // Création d'évênement sur les checkbox
-    $(".btnLegende label").hover(function(){
-      var classe = this.getAttribute("class");
-      $("#chart svg g path." + classe).addClass("hover");
-    },function(){
-      var classe = this.getAttribute("class");
-      $("#chart svg g path." + classe).removeClass("hover");
-    });
-
-
-    // Créé les liens avec les numéros de node dans graphe.link
-    graph.links = graph.links.map(function(x) {
-      if(x.pattern == null){
-        x.pattern = "database";  
-      }
-      return {
-        id : x.id,
-        source: nodeMap[x.source],
-        target: nodeMap[x.target],
-        value: x.value,
-        label: x.label,
-        pattern: x.pattern
-      };
-    });
+    return {
+      id : x.id,
+      source: nodeMap[x.source],
+      target: nodeMap[x.target],
+      value: x.value,
+      label: x.label,
+      patterns: x.patterns
+    };
+  });
     
   // initialise les éléments graph.nodes et graph.links dans sankey, la fonction layout définis les positionnements etc ...
   sankey
   .nodes(graph.nodes)
   .links(graph.links)
   .layout(32);
-// add in the links
-var link = svg.append("g").selectAll(".link")
-.data(graph.links)
-.enter().append("path")
-.attr("class", "link")
-.each(function(x){
-  if(x.pattern != null){
-    var elt = d3.select(this);
-    if(x.pattern != "database"){
-      elt.classed(x.pattern + x.id, true);
-    }
-    elt.classed(x.pattern, true);
-  }
-})
-.attr("d", function(x){return path(x,0);})
-.style("stroke-width", function(d){return 3*d.value;})
-.sort(function(a, b) { return b.dy - a.dy; });
-  /*
-  .append("path")
-  .classed("link",true)
+  // add in the links
+  var link = svg.append("g").selectAll(".link")
+  .data(graph.links)
+  .enter().append("path")
+  .attr("class", "link")
   .each(function(x){
-    var elt = d3.select(this);
-    elt.classed(x.name,true); 
-  }, true)
-  .attr("d",function(d,i){console.log(index + " " + i);return path(obj,0.5*(obj.value * d.links.length) * (i+1));})
-  .style("stroke-width", function(d){return 0.5*(obj.value * d.links.length);});*/
-
-// add in the label for the edges on mouse over 
-link.append("title").text(function(d) {
-  var str = "Node : " + d.label;
-  return str;
-});
-/*
-link.data().forEach(function(obj, index){
-  var cpt = 0;
-  obj.pattern.forEach(function(objPattern,indexPattern){
-    svg.append("g").selectAll(".link").data(objPattern.links).enter()
+    if(x.patterns != null){
+      var elt = d3.select(this);
+      if(x.patterns != "database"){
+        elt.classed(x.patterns + x.id, true);
+      }
+      elt.classed(x.patterns, true);
+    }
+  })
+  .attr("d", function(x){return path(x,0);})
+  .style("stroke-width", function(d){return 3*d.value;})
+  .sort(function(a, b) { return b.dy - a.dy; });
+    /*
     .append("path")
     .classed("link",true)
     .each(function(x){
       var elt = d3.select(this);
-      elt.classed(objPattern.name + x.id, true);
-      elt.classed(objPattern.name, true);
-    })
-    .attr("d",function(d,i){cpt++;return path(obj,0.5 * obj.value * cpt)})
-    .style("stroke-width", function(d){return 0.5*obj.value})
+      elt.classed(x.name,true); 
+    }, true)
+    .attr("d",function(d,i){console.log(index + " " + i);return path(obj,0.5*(obj.value * d.links.length) * (i+1));})
+    .style("stroke-width", function(d){return 0.5*(obj.value * d.links.length);});*/
+
+  // add in the label for the edges on mouse over 
+  link.append("title").text(function(d) {
+    var str = "Node : " + d.label;
+    return str;
   });
-});
-*/
-/*
-// Ajout des classes sur les links
-link.data().forEach(function(lien, index){
-  if(lien.pattern!=null){
-    lien.pattern.forEach(function(pattern){
-      $(link[0][index]).addClass(pattern.name);
-      pattern.links.forEach(function(patternLink){
-        $(link[0][index]).addClass(pattern.name + patternLink.id);
-      });
+  /*
+  link.data().forEach(function(obj, index){
+    var cpt = 0;
+    obj.pattern.forEach(function(objPattern,indexPattern){
+      svg.append("g").selectAll(".link").data(objPattern.links).enter()
+      .append("path")
+      .classed("link",true)
+      .each(function(x){
+        var elt = d3.select(this);
+        elt.classed(objPattern.name + x.id, true);
+        elt.classed(objPattern.name, true);
+      })
+      .attr("d",function(d,i){cpt++;return path(obj,0.5 * obj.value * cpt)})
+      .style("stroke-width", function(d){return 0.5*obj.value})
     });
+  });
+  */
+  /*
+  // Ajout des classes sur les links
+  link.data().forEach(function(lien, index){
+    if(lien.pattern!=null){
+      lien.pattern.forEach(function(pattern){
+        $(link[0][index]).addClass(pattern.name);
+        pattern.links.forEach(function(patternLink){
+          $(link[0][index]).addClass(pattern.name + patternLink.id);
+        });
+      });
+    }
+  });
+  */  
+  // add the link titles
+  /*
+    link.append("title")
+          .text(function(d) {
+        	return d.source.name + " → " + 
+                  d.target.name + "\n" + format(d.value); });
+                  */
+
+  // add in the nodes
+  var node = svg.append("g").selectAll(".node")
+  .data(graph.nodes)
+  .enter().append("g")
+  .attr("class", "node")
+  .attr("transform", function(d) { 
+    return "translate(" + d.x + "," + d.y + ")"; })
+
+  .call(d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("dragstart", function() { 
+      this.parentNode.appendChild(this); })
+    .on("drag", dragmove));
+
+  // add the rectangles for the nodes
+  node.append("rect")
+  .attr("height", function(d) {return d.dy; })
+  .attr("width", sankey.nodeWidth())
+  .style("fill", function(d) { 
+    return d.color = color(d.id); })
+  .style("stroke", function(d) { 
+    return d3.rgb(d.color).darker(2); })
+      /*.append("title")
+        .text(function(d) { 
+          return d.name + "\n" + format(d.value); });*/
+
+  // add in the label for the nodes
+  node.append("text")
+  .attr("x", 0)
+  .attr("y", function(d) { return d.dy / 2; })
+  .attr("dy", ".35em")
+  .attr("text-anchor", "begin")
+  .attr("transform", null)
+  .text(function(d) { return d.id; })
+
+  // add in the label for the nodes on mouse over
+  node.append("svg:title")
+  .text(function(d) { return d.label; })
+
+  // the function for moving the nodes
+  function dragmove(d) {
+    d3.select(this).attr("transform", 
+      "translate(" + (
+       d.x
+          	   //d.x = Math.max(0, Math.min(width - d.dx, d3.event.x))
+              ) + "," + (
+              d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))
+              ) + ")");
+    sankey.relayout();
+    link.attr("d", path);
   }
-});
-*/  
-// add the link titles
-/*
-  link.append("title")
-        .text(function(d) {
-      	return d.source.name + " → " + 
-                d.target.name + "\n" + format(d.value); });
-                */
-
-// add in the nodes
-var node = svg.append("g").selectAll(".node")
-.data(graph.nodes)
-.enter().append("g")
-.attr("class", "node")
-.attr("transform", function(d) { 
-  return "translate(" + d.x + "," + d.y + ")"; })
-
-.call(d3.behavior.drag()
-  .origin(function(d) { return d; })
-  .on("dragstart", function() { 
-    this.parentNode.appendChild(this); })
-  .on("drag", dragmove));
-
-// add the rectangles for the nodes
-node.append("rect")
-.attr("height", function(d) {return d.dy; })
-.attr("width", sankey.nodeWidth())
-.style("fill", function(d) { 
-  return d.color = color(d.id); })
-.style("stroke", function(d) { 
-  return d3.rgb(d.color).darker(2); })
-    /*.append("title")
-      .text(function(d) { 
-        return d.name + "\n" + format(d.value); });*/
-
-// add in the label for the nodes
-node.append("text")
-.attr("x", 0)
-.attr("y", function(d) { return d.dy / 2; })
-.attr("dy", ".35em")
-.attr("text-anchor", "begin")
-.attr("transform", null)
-.text(function(d) { return d.id; })
-
-// add in the label for the nodes on mouse over
-node.append("svg:title")
-.text(function(d) { return d.label; })
-
-// the function for moving the nodes
-function dragmove(d) {
-  d3.select(this).attr("transform", 
-    "translate(" + (
-     d.x
-        	   //d.x = Math.max(0, Math.min(width - d.dx, d3.event.x))
-            ) + "," + (
-            d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))
-            ) + ")");
-  sankey.relayout();
-  link.attr("d", path);
-}
 });
 
 </script>
