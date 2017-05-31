@@ -68,7 +68,7 @@ var sankey = d3.sankey()
 var path = sankey.link();
 
 // load the data
-d3.json("json/testNew.json", function(error, graph) {
+d3.json("json/newjson.json", function(error, graph) {
 
   if(graph == null){
     if(error.message == null){
@@ -134,7 +134,7 @@ d3.json("json/testNew.json", function(error, graph) {
                   .on("click",function(evt){
                     checkInput(this);
                   }))
-                .append(y.id)));
+                .append(y.id + " - Nodes : " + y.label)));
             arrayID.push(y.id);
           }
           var obj = y;
