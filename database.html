@@ -102,7 +102,7 @@ d3.json("json/newjson.json", function(error, graph) {
           }))
         .append("Database"))));
   console.log(graph);
-  if(graph.patterns != null){
+  /*if(graph.patterns != null){
     graph.patterns.forEach(function(x){
       var arrayID = [];
       if(x.links.length != 0){
@@ -150,7 +150,7 @@ d3.json("json/newjson.json", function(error, graph) {
         });
       }
     });
-  }
+  }*/
   // Création d'évênement sur les checkbox
   $(".btnLegende label").hover(function(){
     var classe = this.getAttribute("class");
@@ -163,9 +163,9 @@ d3.json("json/newjson.json", function(error, graph) {
 
   // Créé les liens avec les numéros de node dans graphe.link
   graph.links = graph.links.map(function(x) {
-    if(x.patterns == null){
+    //if(x.patterns == null){
       x.patterns = "database";  
-    }
+    //}
     return {
       id : x.id,
       source: nodeMap[x.source],
@@ -210,7 +210,7 @@ d3.json("json/newjson.json", function(error, graph) {
 
   // add in the label for the edges on mouse over 
   link.append("title").text(function(d) {
-    var str = "Node : " + d.label;
+    var str = "Transactions : " + d.label;
     return str;
   });
   /*

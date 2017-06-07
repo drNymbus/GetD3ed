@@ -19,7 +19,7 @@ header{
   /*position: absolute;*/
   justify-content: space-around;
   border-bottom: 1px solid black;
-  height:80px;
+  /*height:80px;*/
 }
 
 header a{
