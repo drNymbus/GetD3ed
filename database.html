@@ -5,15 +5,14 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 <body>
-  <header>
+	<header>
     <a href="http://www.lirmm.fr/lirmm_eng" target="_blank"><img src="img/lirmm.png" class="logo" /></a>
-    <h1>Representative Movement Patterns</h1>
+    <h1>Representative Movement Database</h1>
     <a href="http://www.umontpellier.fr/" target="_blank"><img src="img/um.png" class="logo" /></a>
   </header>
   <div id="trajectoire">
   <div id="legende">
-    <div class="btnLegende">
-    </div>
+    <div class="btnLegende"></div>
   </div>
   <div id="chart">
 
@@ -89,8 +88,8 @@ d3.json("json/newjson.json", function(error, graph) {
     .append($("<li>")
       .append($("<input>")
         .attr("type","button")
-        .attr("value","Database")
-        .attr("onclick","javascript:location.href='database.html'")))
+        .attr("value","Patterns")
+        .attr("onclick","javascript:location.href='trajectories.html'")))
     .append($("<li>")
       .append($("<label>")
         .addClass("database")

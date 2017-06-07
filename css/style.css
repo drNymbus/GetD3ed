@@ -16,6 +16,7 @@ body{
 
 header{
   display: flex;
+  /*position: absolute;*/
   justify-content: space-around;
   border-bottom: 1px solid black;
   height:80px;
@@ -29,16 +30,25 @@ header img{
   height:50px;
 }
 
+div#trajectoire{
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
 div#legende{
-  position: absolute;
-  height:100%;
-  width:250px;
+  /*display: flex;*/
+  height:92vh;
+  width:15%;
   border-right: 1px solid black;
+  overflow: scroll;
+  float: left;
 }
 
 div#chart{
-  display: block;
-  padding-left: 250px;
+  /*display: flex;*/
+  width: 85%;
+  overflow: scroll;
+  height: 92vh;
 }
 
 p{
