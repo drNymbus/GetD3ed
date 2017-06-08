@@ -42,7 +42,7 @@ var units = "Widgets";
 
 
 var margin = {top: 40, right: 40, bottom: 40, left: 40},
-width = 1024 - margin.right - margin.left,
+width = 624 - margin.right - margin.left,
 height = 800 - margin.top - margin.bottom;
 
 
@@ -50,27 +50,31 @@ var formatNumber = d3.format(",.0f"),    // zero decimal places
 format = function(d) { return formatNumber(d) + " " + units; },
 color = d3.scale.category20();
 
-// append the svg canvas to the page
-var svg = d3.select("#chart").append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform", 
-  "translate(" + margin.left + "," + margin.top + ")");
-
-// Set the sankey diagram properties
-var sankey = d3.sankey()
-.nodeWidth(24)
-.nodePadding(10)
-.size([width, height]);
-
-//---------------- Initialisation du svg Terminée ----------------- 
-
-// path est une fonction -> permet la création des liens entre clusters
-var path = sankey.link();
-
 // load the data
 d3.json("json/newjson.json", function(error, graph) {
+
+  //Redimensionnement de la taille en fonction du nombre de temps total
+  var nbtime;
+  for(var i = 0; i < graph.nodes.length; i++){
+    nbtime = graph.nodes[i].time
+  }
+  //console.log(width + 100*time);
+  //svg.attr("width", width + 100*time);
+  width = width + 100*nbtime
+  var svg = d3.select("#chart").append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", 
+  "translate(" + margin.left + "," + margin.top + ")");
+  // Set the sankey diagram properties
+  var sankey = d3.sankey()
+  .nodeWidth(24)
+  .nodePadding(10)
+  .size([width, height]);
+//---------------- Initialisation du svg Terminée ----------------- 
+// path est une fonction -> permet la création des liens entre clusters
+  var path = sankey.link();
 
   if(graph == null){
     if(error.message == null){
@@ -250,6 +254,44 @@ d3.json("json/newjson.json", function(error, graph) {
         	return d.source.name + " → " + 
                   d.target.name + "\n" + format(d.value); });
                   */
+    //var lastTime = 0;
+  var lastX = -1;
+  var timeArray = [];
+  (graph.nodes).forEach(function(cluster){
+    if(cluster.x != lastX){
+      //lastTime = cluster.time;
+      lastX = cluster.x;
+      timeArray.push(lastX);
+      //timeArray.splice(lastTime - 1, 0, lastX);
+    }
+    console.log(lastX);
+    
+  })
+
+  for(var i = 0; i < timeArray.length; i++){
+    //Affichage des temps
+    /*
+    var time = [];
+    graph.nodes.forEach(function(obj){
+    console.log(obj["time"]);
+    });*/
+    svg.append("line")
+      .attr("x1", timeArray[i] + 15)
+      .attr("y1", 20 - margin.top)
+      .attr("x2", timeArray[i] + 15)
+      .attr("y2", height + 200)
+      .style("stroke-width", 2)
+      .style("stroke", "black")
+      .style("fill", "none");
+
+    svg.append("text")
+      .attr("y", 15 - margin.top)//magic number here
+      .attr("x", timeArray[i] + 15)
+      .attr('text-anchor', 'middle')
+      .attr("class", "time")//easy to style with CSS
+      .text(function(d) {return "T" + (i + 1)}); 
+    //Fin Affichage temps
+  }
 
   // add in the nodes
   var node = svg.append("g").selectAll(".node")

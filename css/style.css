@@ -6,9 +6,8 @@ body{
   --colorConvoys:rgb(0,0,255);
   --colorClosedSwarms:rgb(255,0,0);
   --colorFuzzyClosedSwarms:rgb(255,100,0);
-  --colorConvergents:rgb(255,255,0);
+  --colorConvergents:rgb(255,215,0); 
   --colorDivergents:rgb(0,255,0);
-
 
   margin:0;
   font-family: verdana, arial, sans-serif;
@@ -38,16 +37,16 @@ div#trajectoire{
 div#legende{
   /*display: flex;*/
   height:92vh;
-  width:15%;
+  width:16%;
   border-right: 1px solid black;
-  overflow: scroll;
+  overflow-y: scroll;
   float: left;
 }
 
 div#chart{
   /*display: flex;*/
-  width: 85%;
-  overflow: scroll;
+  width: 84%;
+  overflow-x: scroll;
   height: 92vh;
 }
 
