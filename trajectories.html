@@ -43,34 +43,16 @@ function checkInput(obj){
 
 var units = "Widgets";
 
-
 var margin = {top: 40, right: 40, bottom: 40, left: 40};
 var width = 624 - margin.right - margin.left;
 var height = 800 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
 format = function(d) { return formatNumber(d) + " " + units; },
-color = d3.scale.category10();
+color = d3.scale.category20();
+//color = d3.rgb("steelblue");
 
-// append the svg canvas to the page
-  /*var time = svg.append("line")
-  .attr("x1", 10)  //<<== change your code here
-  .attr("y1", 0)
-  .attr("x2", 10)  //<<== and here
-  .attr("y2", 1000)
-  .style("stroke-width", 2)
-  .style("stroke", "black")
-  .style("fill", "none");
-  time.append("text")
-  .attr("x",100)
-  .attr("y",100)
-  .attr("dy", ".35em")
-  .attr("color", "#FFFFFF")
-  .attr("text-anchor", "begin")
-  .attr("transform", null)
-  .text("OKTAMERRRRR");*/
-
-// load the data
+// load the json data
 d3.json("json/newjson.json", function(error, graph) {
 
 //Redimensionnement de la taille en fonction du nombre de temps total

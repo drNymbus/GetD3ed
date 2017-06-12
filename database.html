@@ -48,7 +48,7 @@ height = 800 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
 format = function(d) { return formatNumber(d) + " " + units; },
-color = d3.scale.category20();
+color = d3.scale.category20b();
 
 // load the data
 d3.json("json/newjson.json", function(error, graph) {
