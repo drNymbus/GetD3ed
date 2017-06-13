@@ -306,9 +306,9 @@ d3.json("json/newjson.json", function(error, graph) {
     console.log(obj["time"]);
     });*/
     svg.append("line")
-      .attr("x1", timeArray[i] + 15)
+      .attr("x1", timeArray[i] + 12)
       .attr("y1", 20 - margin.top)
-      .attr("x2", timeArray[i] + 15)
+      .attr("x2", timeArray[i] + 12)
       .attr("y2", height + 200)
       .style("stroke-width", 2)
       .style("stroke", "black")
@@ -316,7 +316,7 @@ d3.json("json/newjson.json", function(error, graph) {
 
     svg.append("text")
       .attr("y", 15 - margin.top)//magic number here
-      .attr("x", timeArray[i] + 15)
+      .attr("x", timeArray[i] + 12)
       .attr('text-anchor', 'middle')
       .attr("class", "time")//easy to style with CSS
       .text(function(d) {return "T" + (i + 1)}); 
@@ -342,8 +342,8 @@ d3.json("json/newjson.json", function(error, graph) {
   node.append("rect")
   .attr("height", function(d) {return d.dy; })
   .attr("width", sankey.nodeWidth())
-  .style("fill", function(d) { 
-    return d.color = color(d.id); })
+  /*.style("fill", function(d) { 
+    return d.color = color(d.id); })*/
   .style("stroke", function(d) { 
     return d3.rgb(d.color).darker(2); })
 

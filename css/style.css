@@ -3,11 +3,11 @@ body{
   Variables
   */
   --colorGpatterns :rgb(255,0,255);
-  --colorConvoys:rgb(0,0,255);
+  --colorConvoys:rgb(0,0,204);
   --colorClosedSwarms:rgb(255,0,0);
   --colorFuzzyClosedSwarms:rgb(255,100,0);
   --colorConvergents:rgb(255,215,0); 
-  --colorDivergents:rgb(0,255,0);
+  --colorDivergents:rgb(0,192,0);
 
   margin:0;
   font-family: verdana, arial, sans-serif;
@@ -57,8 +57,9 @@ p{
 
 .node rect {
   cursor: move;
-  fill-opacity: .9;
+  /*fill-opacity: .9;*/
   shape-rendering: crispEdges;
+  fill:lightgrey;
 }
  
 .node text {
@@ -73,7 +74,7 @@ p{
 }
  
 .link:hover {
-  stroke-opacity: .5;
+  stroke-opacity: 1;
 }
 
 div.btnLegende li{
@@ -90,7 +91,7 @@ div.btnLegende label{
 }
 
 div.btnLegende label:hover{
-  opacity: 0.8;
+  opacity: 1;
 }
 
 div.btnLegende label.GroupPattern{
@@ -115,7 +116,7 @@ div.btnLegende label.Divergent{
 
 
 g path.hover{
-  stroke-opacity: 0.5;
+  stroke-opacity: 0.7;
 }
 
 
