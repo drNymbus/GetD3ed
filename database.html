@@ -16,7 +16,7 @@
   </div>
   <div id="chart">
 
-    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="https://d3js.org/d3.v3.js"></script>
     <script src="js/jquery-3.2.1.min.js"></script>
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
     <script src="js/sankey.js"></script>
@@ -311,8 +311,8 @@ d3.json("json/newjson.json", function(error, graph) {
   node.append("rect")
   .attr("height", function(d) {return d.dy; })
   .attr("width", sankey.nodeWidth())
-  .style("fill", function(d) { 
-    return d.color = color(d.id); })
+  /*.style("fill", function(d) { 
+    return d.color = color(d.id); })*/
   .style("stroke", function(d) { 
     return d3.rgb(d.color).darker(2); })
       /*.append("title")
