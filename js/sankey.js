@@ -103,11 +103,11 @@ d3.sankey = function() {
       addNodePerTime(nodes);
     }
     nodes.forEach(function(node) {
-      node.value = nbNodesPerTime[node.time];
-      /*node.value = Math.max(
+      //node.value = nbNodesPerTime[node.time];
+      node.value = Math.max(
         d3.sum(node.sourceLinks, value),
         d3.sum(node.targetLinks, value)
-      );*/
+      );
     });
     function addNodePerTime(nodes) {
       console.log("Salut mes bros");
@@ -226,6 +226,9 @@ d3.sankey = function() {
           }
           else{
             node.dy = node.value * ky;
+            if(node.dy < 16){
+              node.dy = 16;
+            }
           }
         });
       });
