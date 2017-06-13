@@ -42,10 +42,9 @@ function checkInput(obj){
 }
 
 var units = "Widgets";
-
 var margin = {top: 40, right: 40, bottom: 40, left: 40};
 var width = 624 - margin.right - margin.left;
-var height = 800 - margin.top - margin.bottom;
+var height = $(window).height() - 120 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
 format = function(d) { return formatNumber(d) + " " + units; },
