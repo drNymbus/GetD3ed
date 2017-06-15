@@ -97,41 +97,12 @@ d3.sankey = function() {
  
   // Compute the value (size) of each node by summing the associated links.
   function computeNodeValues() {
-    var nbNodesPerTime = [];
-    if(nbNodesPerTime.length == 0){
-      console.log("OKTAMER");
-      addNodePerTime(nodes);
-    }
     nodes.forEach(function(node) {
-      //node.value = nbNodesPerTime[node.time];
       node.value = Math.max(
         d3.sum(node.sourceLinks, value),
         d3.sum(node.targetLinks, value)
       );
     });
-    function addNodePerTime(nodes) {
-      console.log("Salut mes bros");
-      var time = 0;
-      var nbNodesByTimes = 0
-      nbNodesPerTime.push(0);
-      nodes.forEach(function(node) {
-        console.log("TIME : " + time);
-        console.log("NODETIME : " +  node.time);
-        if(node.time != time) {
-          nbNodesPerTime.push(nbNodesByTimes + 1);
-          nbNodesByTimes = 0;
-          time = node.time;
-        } else {
-          ++nbNodesByTimes;
-          console.log("NBNODESBYTIMES : " + nbNodesByTimes); 
-        }
-      });
-      console.log("time : " + time);
-      console.log("nbnodesbytime : " + nbNodesByTimes);
-      console.log("tabnodepertime : " + nbNodesPerTime);
-      nbNodesPerTime[time] = nbNodesByTimes + 1;
-      console.log("tabnodepertime : " + nbNodesPerTime);
-    }
   }
  
   // Iteratively assign the breadth (x-position) for each node.
@@ -203,7 +174,7 @@ d3.sankey = function() {
         .sortKeys(d3.ascending)
         .entries(nodes)
         .map(function(d) { return d.values; });
-    //
+    //Utilisation de la variable iteration
     initializeNodeDepth();
     resolveCollisions();
     for (var alpha = 1; iterations > 0; --iterations) {
@@ -316,12 +287,10 @@ d3.sankey = function() {
       node.sourceLinks.forEach(function(link) {
         link.sy = sy;
         sy += link.dy;
-        //sy += 10;
       });
       node.targetLinks.forEach(function(link) {
         link.ty = ty;
         ty += link.dy;
-        //ty += 10;
       });
     });
  

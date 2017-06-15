@@ -21,6 +21,7 @@
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
     <script src="js/sankey.js"></script>
     <script>
+"use strict"
 function checkInput(obj){
   var checked = $(obj).prop("checked");
   var classe = obj.getAttribute("class");
@@ -39,27 +40,23 @@ function checkInput(obj){
 
 
 var units = "Widgets";
-
-
 var margin = {top: 40, right: 40, bottom: 40, left: 40},
 width = 624 - margin.right - margin.left,
-height = 800 - margin.top - margin.bottom;
+height = $(window).height() - 120 - margin.top - margin.bottom;
 
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
 format = function(d) { return formatNumber(d) + " " + units; },
-color = d3.scale.category20b();
+color = d3.scale.category20();
 
 // load the data
-d3.json("json/newjson.json", function(error, graph) {
+d3.json("json/jsonResults.json", function(error, graph) {
 
   //Redimensionnement de la taille en fonction du nombre de temps total
   var nbtime;
   for(var i = 0; i < graph.nodes.length; i++){
     nbtime = graph.nodes[i].time
   }
-  //console.log(width + 100*time);
-  //svg.attr("width", width + 100*time);
   width = width + 100*nbtime
   var svg = d3.select("#chart").append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -69,7 +66,7 @@ d3.json("json/newjson.json", function(error, graph) {
   "translate(" + margin.left + "," + margin.top + ")");
   // Set the sankey diagram properties
   var sankey = d3.sankey()
-  .nodeWidth(24)
+  .nodeWidth(32)
   .nodePadding(10)
   .size([width, height]);
 //---------------- Initialisation du svg Terminée ----------------- 
@@ -95,6 +92,7 @@ d3.json("json/newjson.json", function(error, graph) {
         .attr("value","Patterns")
         .attr("onclick","javascript:location.href='trajectories.html'")))
     .append($("<li>")
+      .addClass("database")
       .append($("<label>")
         .addClass("database")
         .append($("<input>")
@@ -102,11 +100,55 @@ d3.json("json/newjson.json", function(error, graph) {
           .attr("type","checkbox")
           .attr("checked","true")
           .on("click",function(evt){
-            checkInput(this);
-          }))
-        .append("Database"))));
-  console.log(graph);
-  /*if(graph.patterns != null){
+                var checked = $(this).prop("checked");
+                var checkbox = document.querySelectorAll(".btnLegende ." + this.getAttribute("class") + " li input");
+                var arr = [];
+                arr = Array.prototype.slice.call(checkbox);
+                $(checkbox).prop("checked", checked);
+                arr.forEach(function(obj){
+                    checkInput(obj);
+                })
+              }))
+        .append("Database"))
+        .append($("<button>")
+          .text("▼")
+          .addClass("button " + "database")
+          .attr("type","button")
+          .on("click",function(evt){
+                if($(".btnLegende ul li." + "database" + " ul").css('display') == 'none'){
+                  $(".btnLegende ul li." + "database" + " ul").show();
+                  $("." + "database" +" > button").text("▼");
+                } else {
+                  $(".btnLegende ul li." + "database" + " ul").hide();
+                  $("." + "database" +" > button").text("▲");
+                }
+          })
+        )));
+  $(".btnLegende ul li." + "database").append($("<ul>"));
+  var lastId;
+  graph.links.forEach(function(x) {
+    if(x.id != lastId){
+      lastId = x.id;
+      $(".btnLegende ul li." + "database" + " ul")
+        .append($("<li>")
+        .append($("<label>")
+          .addClass("database" + x.id)
+          .append($("<input>")
+            .addClass("database" + x.id)
+            .attr("type","checkbox")
+            .attr("checked","true")
+            .on("click",function(evt){
+             //console.log(this);
+              checkInput(this);
+            }))
+            .append(x.id + " - Objects : " + x.label)
+            .attr("title", "Objects : " + x.label)))
+    }
+    
+  });
+
+    /*graph.links = [];
+    if(graph.patterns != null){
     graph.patterns.forEach(function(x){
       var arrayID = [];
       if(x.links.length != 0){
@@ -193,10 +235,7 @@ d3.json("json/newjson.json", function(error, graph) {
   .each(function(x){
     if(x.patterns != null){
       var elt = d3.select(this);
-      if(x.patterns != "database"){
-        elt.classed(x.patterns + x.id, true);
-      }
-      elt.classed(x.patterns, true);
+      elt.classed("database" + x.id, true);
     }
   })
   .attr("d", function(x){return path(x,0);})
@@ -214,8 +253,16 @@ d3.json("json/newjson.json", function(error, graph) {
 
   // add in the label for the edges on mouse over 
   link.append("title").text(function(d) {
-    var str = "Transactions : " + d.label;
+    var str = "Objects : " + d.label;
     return str;
+  });
+
+  $("#chart svg g path").hover(function(){
+    var classe = this.getAttribute("class");
+    $("#chart svg g path[class='"+classe+"']").addClass("hover");
+  },function(){
+    var classe = this.getAttribute("class");
+    $("#chart svg g path[class='"+classe+"']").removeClass("hover");
   });
   /*
   link.data().forEach(function(obj, index){
@@ -276,9 +323,9 @@ d3.json("json/newjson.json", function(error, graph) {
     console.log(obj["time"]);
     });*/
     svg.append("line")
-      .attr("x1", timeArray[i] + 15)
+      .attr("x1", timeArray[i] + 16)
       .attr("y1", 20 - margin.top)
-      .attr("x2", timeArray[i] + 15)
+      .attr("x2", timeArray[i] + 16)
       .attr("y2", height + 200)
       .style("stroke-width", 2)
       .style("stroke", "black")
@@ -286,7 +333,7 @@ d3.json("json/newjson.json", function(error, graph) {
 
     svg.append("text")
       .attr("y", 15 - margin.top)//magic number here
-      .attr("x", timeArray[i] + 15)
+      .attr("x", timeArray[i] + 16)
       .attr('text-anchor', 'middle')
       .attr("class", "time")//easy to style with CSS
       .text(function(d) {return "T" + (i + 1)}); 
@@ -321,7 +368,7 @@ d3.json("json/newjson.json", function(error, graph) {
 
   // add in the label for the nodes
   node.append("text")
-  .attr("x", 0)
+  .attr("x", 16)
   .attr("y", function(d) { return d.dy / 2; })
   .attr("dy", ".35em")
   .attr("text-anchor", "begin")
@@ -330,7 +377,7 @@ d3.json("json/newjson.json", function(error, graph) {
 
   // add in the label for the nodes on mouse over
   node.append("svg:title")
-  .text(function(d) { return d.label; })
+  .text(function(d) { return "Objects : " + d.label; });
 
   // the function for moving the nodes
   function dragmove(d) {
