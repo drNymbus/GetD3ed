@@ -1,34 +1,40 @@
-*{
-  <!-- border: 1px dotted #FF0000;-->
-}
-
-html{
-  background-color: #D1E7FD;
-}
-
 body{
+  margin:0;
   font-family: verdana, arial, sans-serif;
-  width: 1024px;
-  margin-right: auto;
-  margin-left: auto;
-  box-shadow: 2px 2px 20px #111111;
-  border-radius: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  background-color: #FFFFFF;
-  padding: 20px;
 }
 
-h1{
-  text-align: center;
-  background-color: #F5F7FF;
-  border-radius: 10px;
-  box-shadow: 1px 1px 10px #111111;
-  padding: 10px;
+header{
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid black;
+  background-color: #5AAFCF;
+  height:80px;
 }
 
-h2{
-  margin: 10px;
+header a{
+  margin:auto;
+}
+
+header img{
+  height:50px;
+}
+
+div#trajectoire{
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+div#legende{
+  height:90vh;
+  width:16%;
+  float: left;
+}
+
+div#chart{
+  width: 84%;
+  overflow-x: scroll;
+  height: 90vh;
+  float: right;
 }
 
 p{
@@ -36,36 +42,34 @@ p{
   text-align: justify;
 }
 
-td{
-  width: 33%;
-  valign: middle;
-}
-
-tr{
-  valign: middle;
-}
-
-img.logo{
-  height: 50px;
-}
-
 .node rect {
   cursor: move;
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
+  fill-opacity: .8;
+  stroke-linecap : round;
+  fill:lightgrey;
 }
- 
+
 .node text {
   pointer-events: none;
   text-shadow: 0 1px 0 #fff;
 }
- 
+
 .link {
   fill: none;
   stroke: #000;
-  stroke-opacity: .2;
+  stroke-opacity: .04;
 }
- 
-.link:hover {
-  stroke-opacity: .5;
+
+div.btnLegende input{
+  margin-right: 5px;
+}
+
+div.btnLegende label{
+  color:#000;
+  opacity: 1;
+}
+
+label {
+  text-align:middle;
+  color:black;
 }
